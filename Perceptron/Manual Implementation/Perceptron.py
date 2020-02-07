@@ -1,16 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 
-#plt.plot(x, y, 'r')
 data = pd.read_csv("iris.data", sep=',')
 data.columns = ['sepal length in cm', 'sepal width in cm', 'petal length in cm', 'petal width in cm',
                 'class']
 data_top = data.head()
-plt.plot(data.iloc[:99, 2], data.iloc[:99, 3],  'o', color='green')
-#plt.plot(data.iloc[:, 3], 'o', color='black')
-#plt.plot(data.iloc[:, 4], 'o', color='red')
+#plt.plot(data.iloc[:99, 2], data.iloc[:99, 3],  'o', color='green')
+
+
 
 result_list = []
 
@@ -26,23 +26,31 @@ data['Result'] = result_list
 
 sepal = np.array(data['sepal width in cm'])
 petal = np.array(data['petal width in cm'])
-petal_t = np.transpose(petal)
-y = []
-y.append(3)
-
-for i in range(1,80):
-    y.append(sepal[i] * petal[i])
-
-x = np.linspace(0, 5, 100)
-y = -x + 3
-w1 = 1
-w2 = 1
-
-
-
-print(y[80])
+features = list(zip(sepal, petal))[0:99]
+w = np.array([0, 0])
+x = np.dot(features, w)
+results = []
+count = 1
+while count < 50:
+    x = np.dot(features, w)
+    s = 2 * random.randint(0, 48)
+    if (int(x[s]) >= 0 and int(result_list[s]) < 0) or (int(x[s]) < 0 and int(result_list[s]) >= 0):
+            w = w + result_list[s] * np.transpose(features[s])
+            count = 0
+    else:
+            count +=1
 
 
-#print(petal_transpose)
-#plt.xlabel('Length')
-#plt.show()
+x_validate = np.dot(features, w)
+for i in range(0, 50):
+    s = (2 * random.randint(0, 48)) + 1
+    #print(x_validate[s], result_list[s])
+
+plt.plot(x_validate, 'o', color='red')
+plt.plot(result_list[0: 99], 'o', color='blue')
+
+print(w)
+plt.show()
+
+
+
