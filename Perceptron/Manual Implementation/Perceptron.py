@@ -3,14 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-
 data = pd.read_csv("iris.data", sep=',')
 data.columns = ['sepal length in cm', 'sepal width in cm', 'petal length in cm', 'petal width in cm',
                 'class']
 data_top = data.head()
-#plt.plot(data.iloc[:99, 2], data.iloc[:99, 3],  'o', color='green')
-
-
 
 result_list = []
 
@@ -38,13 +34,11 @@ while count < 50:
             w = w + result_list[s] * np.transpose(features[s])
             count = 0
     else:
-            count +=1
-
+            count += 1
 
 x_validate = np.dot(features, w)
 for i in range(0, 50):
     s = (2 * random.randint(0, 48)) + 1
-    #print(x_validate[s], result_list[s])
 
 plt.plot(x_validate, 'o', color='red')
 plt.plot(result_list[0: 99], 'o', color='blue')
