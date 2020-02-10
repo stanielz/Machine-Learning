@@ -49,7 +49,7 @@ x_validate = []
 x2_validate = []
 for i in range(0, 49):
     s = (2 * random.randint(0, 48)) + 1
-    if np.dot(features[s], w) >= 0 :
+    if np.dot(features[s], w) >= 0:
         x_validate.append(1.1)
     else:
         x_validate.append(-1.1)
@@ -59,5 +59,7 @@ for i in range(0, 49):
 plt.plot(x2_validate, 'o', color='red', label='actual results')
 plt.plot(x_validate, 'o', color='blue', label='predicted results')
 plt.legend(loc='center')
+fig1 = plt.gcf()
 plt.show()
-plt.savefig('results.png')
+plt.draw()
+fig1.savefig('results1.png', dpi=100)
