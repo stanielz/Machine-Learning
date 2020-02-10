@@ -34,7 +34,7 @@ results = []
 count = 1
 
 #  tests and updates weight(w) until we have more than 50 consecutive predictions on learning data
-#  s variable guarantees even index
+#  s variable guarantees even index for learning
 while count < 50:
     x = np.dot(features, w)
     s = 2 * random.randint(0, 48)
@@ -45,6 +45,7 @@ while count < 50:
         count += 1
 
 #  validates weight (w) calculated above on the odd numbered indexes (validation data).
+#  s variable now guarantees odd index for validation
 x_validate = []
 x2_validate = []
 for i in range(0, 49):
