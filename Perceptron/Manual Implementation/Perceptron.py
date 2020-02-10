@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import random
 
 
@@ -10,6 +9,7 @@ def col_vector(array1, array2):
         col_vector_list.append((array1[i], array2[i]))
 
     return col_vector_list
+
 
 def dot(array1, array2):
     d_product = []
@@ -41,13 +41,11 @@ for i in data.iloc[:, 4]:
 data['Result'] = result_list
 
 #  creates array for Perceptron calculation
-sepal = np.array(data['sepal width in cm'])
-petal = np.array(data['petal width in cm'])
+sepal = list(data['sepal width in cm'])
+petal = list(data['petal width in cm'])
 features = list(zip(sepal, petal))[0:100]
 w = [0, 0]
-#x = np.dot(features, w)
 x = dot(features, w)
-#print(x)
 results = []
 count = 1
 
@@ -58,6 +56,7 @@ while count <= 50:
     s = 2 * random.randint(0, 49)
     for s in range(0, 49):
         if (int(x[2 * s]) >= 0 and int(result_list[2 * s]) < 0) or (int(x[2 * s]) < 0 and int(result_list[2 * s]) >= 0):
+
             w = [w[0] + result_list[2 * s] * features[2 * s][0], w[1] + result_list[2 * s] * features[2 * s][1]]
             count = 0
         else:
@@ -68,7 +67,7 @@ while count <= 50:
 x_validate = []
 x2_validate = []
 for i in range(0, 49):
-    if np.dot(features[2 * i + 1], w) >= 0:
+    if (features[2 * i + 1][0] * w[0] + features[2 * i + 1][1] * w[1]) >= 0:
         x_validate.append(1.1)
     else:
         x_validate.append(-1.1)
