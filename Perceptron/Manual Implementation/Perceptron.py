@@ -11,12 +11,13 @@ def col_vector(array1, array2):
     return col_vector_list
 
 
-def dot(array1, array2):
+def dot(array1, array2, bix, biw):
     d_product = []
+    bx = 0
     for i in range(0, len(array1)):
         d_product.append(array1[i][0] * array2[0] + array1[i][1] * array2[1])
-
-    return d_product
+        bx = bix * biw + array1[i][0] * array2[0] + array1[i][1] * array2[1]
+    return d_product, bx, biw
 
 
 #  import data and name columns
@@ -44,20 +45,21 @@ data['Result'] = result_list
 sepal = list(data['sepal width in cm'])
 petal = list(data['petal width in cm'])
 features = list(zip(sepal, petal))[0:100]
-w = [0, 0]
-x = dot(features, w)
+bias_x = 1
+bias_w = 0
+w = [0, 0, 0]
+x, bias_x, bias_w = dot(features, w, bias_x, bias_w)
 results = []
 count = 1
 
 #  tests and updates weight(w) until we have more than 50 consecutive predictions on learning data
 #  s variable guarantees even index for learning
 while count <= 50:
-    x = dot(features, w)
+    x, bias_x, bias_w = dot(features, w, bias_x, bias_w)
     s = 2 * random.randint(0, 49)
     for s in range(0, 49):
         if (int(x[2 * s]) >= 0 and int(result_list[2 * s]) < 0) or (int(x[2 * s]) < 0 and int(result_list[2 * s]) >= 0):
-
-            w = [w[0] + result_list[2 * s] * features[2 * s][0], w[1] + result_list[2 * s] * features[2 * s][1]]
+            w = [features[2 * s][0], w[1] + result_list[2 * s] * features[2 * s][1], w[0] + result_list[2 * s]]
             count = 0
         else:
             count += 1
@@ -74,6 +76,13 @@ for i in range(0, 49):
     x2_validate.append(result_list[2 * i + 1])
 
 #  plots predicted data vs actual results
+temp = w[0]
+temp2 = w[1]
+w[0] = w[2]
+w[1] = temp
+w[2] = w[1]
+
+print("weights are:")
 print(w)
 plt.plot(x2_validate, 'o', color='red', label='actual results')
 plt.plot(x_validate, 'o', color='blue', label='predicted results')
